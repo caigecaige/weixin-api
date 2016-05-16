@@ -39,6 +39,8 @@ func main() {
 	//	fmt.Println("\n")
 	//	fmt.Printf("%+v", handler.Response)
 	handler := new(access_token.AccessToken)
+	handler.IsCache = true
+	handler.CacheDirectory = "cache"
 	handler.AppId = "wx385749384926ddeb"
 	handler.Secret = "be51e251b884156db5df7cc92807d7aa"
 	handler.Get()
@@ -62,4 +64,3 @@ func main() {
 	//	}
 
 }
-
