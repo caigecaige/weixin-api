@@ -47,38 +47,6 @@ func (handler *AccessToken) Get() bool {
 	} else {
 		return handler.getFromServe()
 	}
-
-	//	res, existReponse := readFile(handler.CacheDirectory, filename)
-	//	if res {
-	//		handler.Response = existReponse
-	//		return res
-	//	} else {
-	//		handler.Api = API_GET_ACCESS_TOKEN
-	//		params := "appid=" + handler.AppId + "&secret=" + handler.Secret
-	//		resp, err := http.Get(handler.Api + params)
-	//		if err != nil {
-	//			panic(err)
-	//		}
-
-	//		defer resp.Body.Close()
-	//		body, err := ioutil.ReadAll(resp.Body)
-	//		if err != nil {
-	//			panic(err)
-	//		}
-	//		enErr := json.Unmarshal(body, &handler.Response)
-	//		if enErr != nil {
-	//			panic(enErr)
-	//		}
-	//		if handler.IsCache {
-	//			handler.Response.ExpiresIn = time.Now().Unix() + 2400
-	//			saveFile(handler.CacheDirectory, filename, handler.Response)
-	//		}
-	//		if handler.Response.AccessToken != "" {
-	//			return true
-	//		} else {
-	//			return false
-	//		}
-	//	}
 }
 
 func (handler *AccessToken) getFromServe() bool {
