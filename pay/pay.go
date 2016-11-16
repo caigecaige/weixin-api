@@ -26,6 +26,8 @@ const (
 	TRADE_TYPE_NATIVE = "NATIVE"
 	TRADE_TYPE_APP    = "APP"
 )
+
+const SUCCESS = "SUCCESS"
 const WX_API_NOTIFY_URL = "/callback"
 
 //商户帐号
