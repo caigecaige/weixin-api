@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 )
 
 const (
@@ -114,7 +115,8 @@ type WxQueryResponse struct {
 	OutTradeNo     string   `xml:"out_trade_no"`
 	Attach         string   `xml:"attach"`
 	TimeEnd        string   `xml:"time_end"`
-	TradeStateDesc string   `xml:"trade_state_desc"`
+	PayTime        int64
+	TradeStateDesc string `xml:"trade_state_desc"`
 }
 
 //微信支付
@@ -217,6 +219,10 @@ func (wp *WxPay) Query() {
 	defer res.Body.Close()
 	content, _ := ioutil.ReadAll(res.Body)
 	xml.Unmarshal([]byte(content), &wp.QueryResponse)
+	payTime, timeErr := time.ParseInLocation("20060102150405", wp.QueryResponse.TimeEnd, time.Local)
+	if timeErr == nil {
+		wp.QueryResponse.PayTime = payTime.Unix()
+	}
 	return
 }
 
