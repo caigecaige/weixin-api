@@ -150,8 +150,8 @@ func (wp *WxPay) initPost() {
 	params = append(params, map[string]string{"key": "out_trade_no", "val": wp.PostRequest.OutTradeNo})
 	params = append(params, map[string]string{"key": "product_id", "val": wp.PostRequest.ProductId})
 	params = append(params, map[string]string{"key": "spbill_create_ip", "val": wp.PostRequest.SpbillCreateIp})
-	params = append(params, map[string]string{"key": "time_start", "val": wp.PostRequest.TimeStart})
 	params = append(params, map[string]string{"key": "time_expire", "val": wp.PostRequest.TimeExpire})
+	params = append(params, map[string]string{"key": "time_start", "val": wp.PostRequest.TimeStart})
 	params = append(params, map[string]string{"key": "total_fee", "val": strconv.Itoa(wp.PostRequest.TotalFee)})
 	params = append(params, map[string]string{"key": "trade_type", "val": wp.PostRequest.TradeType})
 	params = append(params, map[string]string{"key": "key", "val": wp.Account.MerchantApiKey})
@@ -172,12 +172,13 @@ func (wp *WxPay) Post() bool {
 	req.Header.Set("Charset", "UTF-8")
 	res, err := client.Do(req)
 	if err != nil {
-		fmt.Sprintln(err)
-		panic(err)
+		fmt.Println(err)
+		return false
 	}
 	defer res.Body.Close()
 	content, rerr := ioutil.ReadAll(res.Body)
 	if rerr != nil {
+		fmt.Println(rerr)
 		return false
 	}
 	xml.Unmarshal([]byte(content), &wp.PostResponse)

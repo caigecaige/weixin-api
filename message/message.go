@@ -4,7 +4,7 @@ package message
 import (
 	"crypto/tls"
 	"encoding/json"
-	"fmt"
+	_ "fmt"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -41,7 +41,7 @@ type WxSend struct {
 	Api         string
 	AccessToekn string
 	Request     *SendRequest
-	Response    SendResponse
+	Response    *SendResponse
 }
 
 func (handler *WxSend) Send(sreq *SendRequest) bool {
@@ -49,7 +49,7 @@ func (handler *WxSend) Send(sreq *SendRequest) bool {
 	handler.Request = sreq
 	handler.Api = SEND_API + handler.AccessToekn
 	data, _ := json.Marshal(handler.Request)
-	fmt.Printf("%s", data)
+	//fmt.Printf("%s", data)
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true}, //不检验证书
 	}
@@ -66,6 +66,6 @@ func (handler *WxSend) Send(sreq *SendRequest) bool {
 	if rerr != nil {
 		return false
 	}
-	json.Unmarshal([]byte(content), &handler.Response)
+	json.Unmarshal([]byte(content), handler.Response)
 	return true
 }

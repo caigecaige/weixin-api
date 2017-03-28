@@ -52,7 +52,7 @@ type Pem struct {
 //转账请求
 type PostRequest struct {
 	XMLName        xml.Name `xml:"xml"`
-	Amount         int64    `xml:"amount"`
+	Amount         int      `xml:"amount"`
 	CheckName      string   `xml:"check_name"`
 	Desc           string   `xml:"desc"`
 	DeviceInfo     string   `xml:"device_info"`
@@ -95,18 +95,18 @@ type QueryResponse struct {
 type Transfer struct {
 	Api           string
 	Pem           Pem
-	Request       PostRequest
-	Response      PostResponse
-	QueryRequest  QueryRequest
-	QueryResponse QueryResponse
+	Request       *PostRequest
+	Response      *PostResponse
+	QueryRequest  *QueryRequest
+	QueryResponse *QueryResponse
 }
 
-func (handler *Transfer) Post(pem Pem, requ PostRequest, resp PostResponse) bool {
+func (handler *Transfer) Post(pem Pem, requ *PostRequest, resp *PostResponse) bool {
 	handler.Api = API
 	handler.Request = requ
 	handler.Response = resp
 	var signParam []map[string]string
-	amount := strconv.FormatInt(handler.Request.Amount, 10)
+	amount := strconv.Itoa(handler.Request.Amount)
 	signParam = append(signParam, map[string]string{"key": "amount", "val": amount})
 	signParam = append(signParam, map[string]string{"key": "check_name", "val": handler.Request.CheckName})
 	signParam = append(signParam, map[string]string{"key": "desc", "val": handler.Request.Desc})
@@ -123,7 +123,6 @@ func (handler *Transfer) Post(pem Pem, requ PostRequest, resp PostResponse) bool
 	data, _ := xml.Marshal(handler.Request)
 	tls := loadPEM(pem.Cert, pem.Key, pem.Ca)
 	tr := &http.Transport{
-		//TLSClientConfig: &tls.Config{InsecureSkipVerify: true}, //不检验证书
 		TLSClientConfig: tls,
 	}
 	client := &http.Client{Transport: tr}
